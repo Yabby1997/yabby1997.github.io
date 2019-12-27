@@ -1,4 +1,4 @@
-# Scriptor
+# Record Machine
 
 Scriptor is a simple, minimal, clean & responsive Jekyll theme for writers.
 
