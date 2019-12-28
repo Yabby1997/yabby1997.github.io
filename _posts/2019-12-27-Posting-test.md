@@ -125,3 +125,58 @@ function fancyAlert(arg) {
   }
 }
 ```
+#swift
+
+```swift
+print()
+enum Rank: Int{
+    case ace = 1;                                                                           //explicitly set Integer value of enum element
+    case two, three, four, five, six, seven, eight, nine, ten, jack, queen, king
+    
+    func description() -> String{
+        switch self{
+        case .ace:
+            return "ace"
+        case .jack:
+            return "jack"
+        case .queen:
+            return "queen"
+        case .king:
+            return "king"
+        default:
+            return String(self.rawValue)
+        }
+    }
+    
+    func isSpecial() -> String{
+        switch self{
+        case .ace, .jack, .queen, .king:
+            return "special"
+        default:
+            return "not special"
+        }
+    }
+}
+
+let card1 = Rank.three
+    print("\(card1.description()) and it is \(card1.isSpecial())")
+
+if let card2 = Rank(rawValue: 11) {                                                             //rawValue is naive value of element in enum, it returns optional
+    print("\(card2.description()) and it is \(card2.isSpecial())")
+}
+else{
+    print("value is nil!!")
+}
+
+if let card3 = Rank(rawValue: 14){
+    print("\(card3.description()) and it is \(card3.isSpecial())")
+}
+else{
+    print("value is nil!!")
+}
+
+let card4: Rank? = Rank(rawValue: 12)
+print("\(card4!.description()) and it is \(card4!.isSpecial())")                                  //it may be nil and if it is, it occurs fatal error
+```
+>스위프트 코드는 과연 잘 나올 것인가?!
+잘 나오니..?
