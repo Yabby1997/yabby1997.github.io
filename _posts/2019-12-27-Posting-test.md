@@ -8,7 +8,31 @@ tags: [compiter, programming language]
 ---
 # C++
 
-``` c
+```c++
+#include<stdio.h>
+
+int main(){
+    print("HelloWorld!");
+    return 0;
+}
+```
+```C++
+#include<stdio.h>
+
+int main(){
+    print("HelloWorld!");
+    return 0;
+}
+```
+```cpp
+#include<stdio.h>
+
+int main(){
+    print("HelloWorld!");
+    return 0;
+}
+```
+```CPP
 #include<stdio.h>
 
 int main(){
@@ -17,14 +41,9 @@ int main(){
 }
 ```
 
-``` java
-public static void main(String[] args){
-    System.out.println("HelloWorld!");
-}
-```
-
 어쨰서 하이라이팅은 잘 안되는 걸 까
 
 >the people who are crazy enough to think that they can change the world are the ones who do.
+>
 >-Steve Jobs
 
