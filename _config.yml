@@ -27,20 +27,21 @@ favicon: images/favicon.png
 navigation:
   - text: Home
     url: /
+  - text: Computer
+    url: /style-guide/
+  - text: Cinema
+    url: /tags/
+  - text: Films
+    url: https://github.com/JustGoodThemes/Scriptor-Jekyll-Theme
   - text: About
     url: /about/
-  - text: Style Guide
-    url: /style-guide/
-  - text: Tags
-    url: /tags/
-  - text: Download
-    url: https://github.com/JustGoodThemes/Scriptor-Jekyll-Theme
 
 # The shortname for your Disqus site to enable comments.
-disqus: justgoodthemes
+disqus: recordmachine
 
 # Colors
-accent_color: '#2d72d9'
+accent_color: '#d91674'
+#basic blue color '#2d72d9'
 
 # Site footer
 footer:

@@ -11,7 +11,7 @@ tags: [compiter, programming language]
 [위키독스](https://wikidocs.net/16468)
 
 ## cin cout override
-
+    ```c++
     #include<iostream>
     
     void helloworld(void);
@@ -38,7 +38,8 @@ tags: [compiter, programming language]
     void helloworld(int a, int b){
         std::cout << "result : " << a + b << std::endl;
     }
-
+    ```
+    
 ## default parameter
 
     #include<iostream>
