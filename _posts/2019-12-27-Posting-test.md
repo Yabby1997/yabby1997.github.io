@@ -12,7 +12,7 @@ tags: [compiter, programming language]
 
 ## cin cout override
 
-```c++
+```cpp
 #include<iostream>
     
 void helloworld(void);
@@ -43,7 +43,7 @@ void helloworld(int a, int b){
     
 ## default parameter
 
-```c++
+```cpp
 #include<iostream>
     
 int adder(int a = 1, int b = 2, int c = 3);
@@ -69,7 +69,7 @@ int adder(int a, int b, int c){
 
 ## define macro function
 
-```c++
+```cpp
 #include<iostream>
     
 #define SQUARE(X) ((X)*(X))
@@ -84,7 +84,7 @@ int main(void){
 ```
 ## inline function
 
-```c++
+```cpp
 #include<iostream>
     
 inline void helloWorld();
