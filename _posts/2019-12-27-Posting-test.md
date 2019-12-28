@@ -12,13 +12,13 @@ tags: [compiter, programming language]
 
 ## cin cout override
 
-    ```swift
-    #include<iostream>
+```c++
+#include<iostream>
     
-    void helloworld(void);
-    void helloworld(int a, int b);
+void helloworld(void);
+void helloworld(int a, int b);
     
-    int main(void){
+int main(void){
         char temp[10];
         int a, b;
         std::cout << "input any string" << std::endl;
@@ -29,25 +29,26 @@ tags: [compiter, programming language]
         std::cin >> b;
         helloworld(a, b);
         return 0;
-    }
+}
     
-    void helloworld(void){
+void helloworld(void){
         std::cout << "HelloWorld" << std::endl;
         std::cout << "type two integer to add" << std::endl;
-    }
+}
     
-    void helloworld(int a, int b){
+void helloworld(int a, int b){
         std::cout << "result : " << a + b << std::endl;
-    }
-    ```
+}
+```
     
 ## default parameter
 
-    #include<iostream>
+```c++
+#include<iostream>
     
-    int adder(int a = 1, int b = 2, int c = 3);
+int adder(int a = 1, int b = 2, int c = 3);
     
-    int main(void){
+int main(void){
         int a, b, c;
         std::cout << "type three integers to add" << std::endl;
         std::cin >> a;
@@ -59,40 +60,44 @@ tags: [compiter, programming language]
         std::cout << "method with and without default values #2 " <<adder(a, b) << std::endl;
         std::cout << "method with and without default values #3 " <<adder(a, b, c) << std::endl;
         return 0;
-    }
+}
     
-    int adder(int a, int b, int c){
+int adder(int a, int b, int c){
         return a + b + c;
-    }
+}
+```
 
 ## define macro function
 
-    #include<iostream>
+```c++
+#include<iostream>
     
-    #define SQUARE(X) ((X)*(X))
+#define SQUARE(X) ((X)*(X))
     
-    int main(void){
+int main(void){
         int a;
         std::cout << "type any integer to square" << std::endl;
         std::cin >> a;
         std::cout << "result : " << SQUARE(a) << std::endl;
         return 0;
-    }
-
+}
+```
 ## inline function
 
-    #include<iostream>
+```c++
+#include<iostream>
     
-    inline void helloWorld();
+inline void helloWorld();
     
-    int main(void){
-        helloWorld();
-        return 0;
-    }
+int main(void){
+    helloWorld();
+    return 0;
+}
     
-    inline void helloWorld(){
-        std::cout << "Hello World!" << std::endl;
-    }
+inline void helloWorld(){
+    std::cout << "Hello World!" << std::endl;
+}
+```
 
 인라인 함수는 실제로 함수를 실행하는 대신, 함수 안의 명령을 함수와 치환해서 실행한다. 
 함수의 메모리영역인 스택영역 메모리를 참조하며 발생할 수 있는 시간낭비를 줄여줄 수 있음. 
