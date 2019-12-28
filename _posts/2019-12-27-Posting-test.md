@@ -11,7 +11,8 @@ tags: [compiter, programming language]
 [위키독스](https://wikidocs.net/16468)
 
 ## cin cout override
-    ```c++
+
+    ```swift
     #include<iostream>
     
     void helloworld(void);
