@@ -12,34 +12,64 @@ tags: [compiter, programming language]
 
 ## cin cout override
 
+typora를 썻을 때 과연 잘 될까 ?
+
+
 ```cpp
-#include<iostream>
-    
+\#include<iostream>
+
+   
+
 void helloworld(void);
+
 void helloworld(int a, int b);
-    
+
+   
+
 int main(void){
-        char temp[10];
-        int a, b;
-        std::cout << "input any string" << std::endl;
-        std::cin >> temp;
-        std::cout << "you typed : " << temp << std::endl;
-        helloworld();
-        std::cin >> a;
-        std::cin >> b;
-        helloworld(a, b);
-        return 0;
+
+    char temp[10];
+
+    int a, b;
+
+    std::cout << "input any string" << std::endl;
+
+    std::cin >> temp;
+
+    std::cout << "you typed : " << temp << std::endl;
+
+    helloworld();
+
+    std::cin >> a;
+
+    std::cin >> b;
+
+    helloworld(a, b);
+
+    return 0;
+
 }
-    
+
+   
+
 void helloworld(void){
-        std::cout << "HelloWorld" << std::endl;
-        std::cout << "type two integer to add" << std::endl;
+
+    std::cout << "HelloWorld" << std::endl;
+
+    std::cout << "type two integer to add" << std::endl;
+
 }
-    
+
+   
+
 void helloworld(int a, int b){
-        std::cout << "result : " << a + b << std::endl;
+
+    std::cout << "result : " << a + b << std::endl;
+
 }
 ```
+
+   
     
 ## default parameter
 
@@ -125,7 +155,7 @@ function fancyAlert(arg) {
   }
 }
 ```
-#swift
+# swift
 
 ```swift
 print()
