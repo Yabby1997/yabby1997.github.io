@@ -8,7 +8,7 @@ tags: [compiter, programming language]
 ---
 # C++
 
-```c
+``` c
 #include<stdio.h>
 
 int main(){
@@ -17,7 +17,7 @@ int main(){
 }
 ```
 
-```java
+``` java
 public static void main(String[] args){
     System.out.println("HelloWorld!");
 }
