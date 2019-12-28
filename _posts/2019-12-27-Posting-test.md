@@ -15,7 +15,7 @@ tags: [compiter, programming language]
 typora를 썻을 때 과연 잘 될까 ?
 
 
-```cpp
+```C++
 \#include<iostream>
 
    
@@ -73,7 +73,7 @@ void helloworld(int a, int b){
     
 ## default parameter
 
-```cpp
+```C++
 #include<iostream>
     
 int adder(int a = 1, int b = 2, int c = 3);
@@ -99,7 +99,7 @@ int adder(int a, int b, int c){
 
 ## define macro function
 
-```cpp
+```C++
 #include<iostream>
     
 #define SQUARE(X) ((X)*(X))
@@ -114,7 +114,7 @@ int main(void){
 ```
 ## inline function
 
-```cpp
+```C++
 #include<iostream>
     
 inline void helloWorld();
@@ -157,7 +157,7 @@ function fancyAlert(arg) {
 ```
 # swift
 
-```swift
+```Swift
 print()
 enum Rank: Int{
     case ace = 1;                                                                           //explicitly set Integer value of enum element
