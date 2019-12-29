@@ -28,13 +28,13 @@ navigation:
   - text: Home
     url: /
   - text: Computer
-    url: /style-guide/
+    url: /style-guide
   - text: Cinema
-    url: /tags/
+    url: /cinema
   - text: Films
-    url: https://github.com/JustGoodThemes/Scriptor-Jekyll-Theme
+    url: /films
   - text: About
-    url: /about/
+    url: /about
 
 # The shortname for your Disqus site to enable comments.
 disqus: recordmachine
