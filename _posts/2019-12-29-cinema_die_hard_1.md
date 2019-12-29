@@ -17,4 +17,5 @@ tags: [Cinema, 90s]
 영화에서 설정상 말이 안되는 부분들이 몇가지 있었지만, 크게 재미를 해치는 수준은 아니었고, 등장하는 빌런들의 범행 동기가 너무 단순한(...)점, 섬세하지 못한 빌런들의 행동이 조금 아쉬웠다. 
 그러나 주인공의 조력자들이 매력적이라는 점, 소소한 디테일 등이 좋았다.
 
-나의 왓챠 평점 : ***3.5 / 5.0*** [왓챠에서 Seunghun 보러가기](https://watcha.com/ko-KR/users/nb4xk1eyMvOAz)
+
+[Seunghun의 왓챠](https://watcha.com/ko-KR/users/nb4xk1eyMvOAz)  평점 : ***3.5 / 5.0*** 
