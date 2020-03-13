@@ -2,7 +2,7 @@
 layout: post
 title: "📚 시스템 프로그래밍 기말고사 정리"
 description: "2019년 2학기 전공 시스템프로그래밍 기말고사 공부 정리"
-date: 2020-02-14
+date: 2020-03-13
 feature_image: images/thumbnail_sysp.png
 tags: [CNU, System Programming, C, Final]
 ---
