@@ -150,7 +150,7 @@ fork로 분기했으니까 2개의 흐름이있고 결국엔 exit하니까 clean
 {% include image_caption.html imageurl="/images/sysp_final_2019-11-22__9.33.17.png" title="images" caption="" %}
 
 정확합니다!
-```
+```C
     //연습문제2
     
     int main(){
