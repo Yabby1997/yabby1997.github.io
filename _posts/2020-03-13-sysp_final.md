@@ -89,7 +89,7 @@ A 0~2, B 1~4, C 3~5이므로 A와 B, A와 C, B와 C가 overwrap된다. concurren
 `pid_t getppid()` : 함수 호출한 프로세스의 부모 pid를 반환 
 
 int fork() : 부모와 동일한 자식 프로세스를 만듬. 자식과 부모가 분기했으므로 부모의경우와 자식의경우가 반환값이 다른데, 부모의 경우는 자식의 pid를 리턴받고, 자식의경우는 0을 리턴받는다. 0을 받으면 끝단이고 0이아니면 그게 자식 pid라고보면될듯.
-
+```C
     void fork1(){
     	int x = 1;
     	pid_t pid = fork();        //fork를 통해 부모 자식 분기!
@@ -101,12 +101,12 @@ int fork() : 부모와 동일한 자식 프로세스를 만듬. 자식과 부모
     	}
     	printf("bye from process %d with x = %d\n", getpid(), x);    //부모와 자식 모두 끝날땐 이걸 만나기때문에 부모와 자식 pid와 x값이 각각 한줄씩 두줄 출력될것
     }
-
+```
 child has x = 2
 parent has x = 0
 bye from process "parent pid" with x = 0
 bye from process "child pid" with x = 2
-
+```C
     void fork2(){
     	printf("L0\n");
     	fork();
@@ -114,12 +114,13 @@ bye from process "child pid" with x = 2
     	fork();
     	printf("Bye\n");
     }
+```
 
 fork를 했지만 반환을 안받은것 뿐, 동일하다.
-{% include image_caption.html imageurl="/images/mogakko_9_1.png" title="" caption="수행결과" %}
+{% include image_caption.html imageurl="/images/mogakko_9_1.png" title="images" caption="수행결과" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.21.02.png" title="" caption="" %}
-
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.21.02.png" title="images" caption="" %}
+```C
     void fork3(){
     	printf("L0\n");
     	fork();
@@ -129,11 +130,12 @@ fork를 했지만 반환을 안받은것 뿐, 동일하다.
     	fork();
     	printf("Bye\n");
     }
+```
 
 시점이 완벽하게 맞춰질수는 없는듯.
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.29.53.png" title="" caption="" %}
-
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.29.53.png" title="images" caption="" %}
+```C
     void cleanup(void){
     	printf("cleaning up\n");
     }
@@ -143,13 +145,13 @@ fork를 했지만 반환을 안받은것 뿐, 동일하다.
     	fork();
     	exit(0);
     }
-
+```
 fork로 분기했으니까 2개의 흐름이있고 결국엔 exit하니까 cleanup이 두번 불릴거같은데?
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.33.17.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.33.17.png" title="images" caption="" %}
 
 정확합니다!
-
+```
     //연습문제2
     
     int main(){
@@ -159,20 +161,21 @@ fork로 분기했으니까 2개의 흐름이있고 결국엔 exit하니까 clean
     	printf("printf2 : x = %d\n", --x);
     	exit(0);
     }
+```
 
 자식은 두줄출력 부모는 한줄출력으로
 printf1 : x = 2
 printf2 : x = 1
 printf2 : x = 0
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.38.09.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.38.09.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.40.56.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__9.40.56.png" title="images" caption="" %}
 
 실질적으로 종료되었는데 부모에서 정리가 안된게 좀비
 결국 실질적인 정리는 부모가 다 해줘야함. 
 정리안하면 init process가 정리해주긴 하는데, 장기간 동작하면 좀비 컨트롤을 잘해줘야함. 서버같은것들은 이런거에 취약하겠죠?
-
+```C
     void fork7(){
     	if(fork() == 0){
     		printf("terminating child pid = %d\n", getpid());
@@ -183,13 +186,13 @@ printf2 : x = 0
     		while(1)
     	}
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.00.49.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.00.49.png" title="images" caption="" %}
 
 안끝난다. while loop이 무한 loop라 끝나지 않는건 이해가되는데, 그냥 부모가 안끝나니까 안죽는거 아닌가..? ← ㅇㅇ 아닌듯 보니까 프로세스가 살아있음 parent는 loop에 빠져 자식을 정리를 안해줘서그런건가?
 
 부모가 정상종료가 안되어서 자식은 종료되었는데도 남아있는거 그래서 defunct. 부모죽이면 같이죽음 
-
+```C
     void fork8(){
     	if(fork() == 0){
     		printf("running child pid = %d\n", getpid());
@@ -200,18 +203,18 @@ printf2 : x = 0
     		exit(0);
     	}
     }
-
+```
 자식이 종료되지 않아 발생하는 좀비 프로세스 
 부모는 죽었는데 자식은 계속돌아가고있따. pid로 확인가능 
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.10.47.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.10.47.png" title="images" caption="" %}
 
 # 10
 
 종료된 프로세스(자원을 모두 반환한 프로세스)라고해도 부모가 제거해줄때까지 종료된 상태로 남아있게 된다(자원은 반환했어도 PID는 점유하는 상태) 부모가  자식을 청소 안하면 init으로 청소해야함. 그러다 부모가 종료되면 종료된 자식들은 커널이 알아서 init으로 청소해준다. 명시적으로 제거하려면 **wait**함수를 쓴다.
 
 `int wait(int *child_status)` : 현재 프로세스의 자식 중 하나 종료시까지 대기. 반환값은 종료된 자식의 pid, child_status에 종료시킨 시그널 저장, 커널이 pid제거 해줌 → 명시적인 삭제
-
+```C
     void fork9(){
     	int child_status;
     	if(fork() == 0){
@@ -225,15 +228,15 @@ printf2 : x = 0
     	printf("bye\n");
     	exit();
     }
-
+```
 자식 부모 분기해서 HC랑 HP중 뭐 하나 먼저실행되고 HC→HP or HP→HC
 HC종료 bye
 그다음 CT→bye될듯
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.38.11.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.38.11.png" title="images" caption="" %}
 
 정확하다이거야~~~~~
-
+```C
     void fork10(){
     	pit_t pid[10];
     	int i;
@@ -249,13 +252,13 @@ HC종료 bye
     			printf("child %d terminate abnormally\n", wpid);
     	}
     }
-
+```
 10 개 다 정상종료될거같은데..?
 WIFEXITED가 정상종료를 확인하는거. wait함수로 기록한걸 기반으로 정상 종료를 확인한다. wait을 통해 종료된거니까 정상종료 맞지
 **exit함수에 어떤 값이 인자로 들어왔냐가 또 WEXITSTATUS로 반환받아지네... 몰랐던 사실..!**
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.46.10.png" title="" caption="" %}
-
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.46.10.png" title="images" caption="" %}
+```C
     void fork11(){
     	pit_t pid[10];
     	int i;
@@ -271,11 +274,11 @@ WIFEXITED가 정상종료를 확인하는거. wait함수로 기록한걸 기반�
     			printf("child %d terminate abnormally\n", wpid);
     	}
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.56.13.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__10.56.13.png" title="images" caption="" %}
 
 특정 pid 를 기다리게 했으므로 배열 순으로, 즉 배열에 만들어진 자식 순으로 제거가되겠지. 그래서 위에거는 걍 지들맘대로 순서없이 제거됐지만 여기서는  순서대로 제거된거다 이말이야~
-
+```C
     //연습문제 1. waitpid
     
     int main(){
@@ -289,7 +292,7 @@ WIFEXITED가 정상종료를 확인하는거. wait함수로 기록한걸 기반�
     	printf("c");
     	exit(0);
     }
-
+```
 a→c(자식), b→c(부모) 두가지 줄기가 나온다. 근데 부모에서 모든 자식이 끝날 때 까지 기다리니까 부모가 끝나기 전에는 자식이 다 끝나야함
 a, b, c(자식) → c(부모) 가 되어야 할듯. 따라서 가능한 출력은
 a b c c
@@ -297,12 +300,12 @@ a c b c
 b a c c
 ~~b c a c~~ **불가능하지 왜냐면 b만나오고 a는 한번도 안나온상태에서 a를 종료시킬 수는 없으니까 마지막 c 가 자식의 c가 되어버림 따라서 위의 3가지경우만 가능**
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__12.22.47.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__12.22.47.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__11.05.12.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__11.05.12.png" title="images" caption="" %}
 
 왠진 모르겠지만 acbc만 나온다. 암튼 뭐 맞는듯
-
+```C
     //연습문제 waitpid2
     
     void waitpidtest2(){
@@ -321,7 +324,7 @@ b a c c
     	printf("bye\n");
     	exit(2);
     }
-
+```
 hello
 1(자식)
 0(부모)
@@ -329,23 +332,23 @@ bye(자식 exit)
 2(부모에서 자식 종료 대기 후 exit status 출력)
 bye(부모 exit)
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__11.13.05.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-22__11.13.05.png" title="images" caption="" %}
 
 어케맞췄노 시ㅂ련아
 
 unsigned int sleep(unsigned int secs) : secs 초 만큼 정지시킴. 정상종료 → 다 기다리고 끝나면 0리턴, 그외에 중도정지면 남은 secs가 반환된다.
 `int pause(void)` : signal을 받을 때 까지 쳐 잔다. 
-
+```C
     //연습문제 3 sleep
     
     unsigned int snooze(unsigned int secs){
     	unsigned int actuallSlept = sleep(secs);
     	printf("Slept for %u of %u secs.\n", secs - actuallSlept, secs);
     }
-
+```
 중단시에 중단되면서 몇초까지 sleep 했는지 출력하는게 핵심인거같은데, 쉘환경에서 실행해야하는건지 잘안됨. 
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__10.01.57.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__10.01.57.png" title="images" caption="" %}
 
 tsh 에서 해도 마찬가지인데???
 
@@ -398,7 +401,7 @@ SIGINT SIGTSTP시그널이 발생하면 **포어그라운드 프로세스 그룹
 유저입력으로 시그널발생 →shell에서 시그널캐치→포어그라운드그룹으로 시그널전달
 
 그룹이 다같이 종료/중지된다 이거야~
-
+```C
     void fork12_original(){
         pid_t pid[10];
         int i, child_status;
@@ -417,8 +420,8 @@ SIGINT SIGTSTP시그널이 발생하면 **포어그라운드 프로세스 그룹
                 printf("child %d terminated abnormally\n", wpid);
         }
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.03.31.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.03.31.png" title="images" caption="" %}
 
 내 예상
 killing process 0000
@@ -426,7 +429,7 @@ child 0000 terminated with exit status 2
 위와같은거 10번 반복
 
 틀렸다. 사실 틀린게 맞음. 정상종료 아니면 비정상종료임. 할거 다하고 끝나야 (exit) 정상종료잖아? 그니까 이건 비정상종료가 뜬다. 만약 내가 원하는대로하려면 아래처럼..
-
+```C
     void fork12_configured(){
         pid_t pid[10];
         int i, child_status;
@@ -447,8 +450,8 @@ child 0000 terminated with exit status 2
                 printf("child %d terminated abnormally\n", wpid);
         }
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__1.55.23.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__1.55.23.png" title="images" caption="" %}
 
 signal을 통해 종료된 경우, WIFSIGNALED를 통해 출력하도록 하게하면 됨. WTERMSIG를 통해서 종료시킨 시그널 번호도 얻어올 수 있따.
 
@@ -463,24 +466,24 @@ signal을 통해 종료된 경우, WIFSIGNALED를 통해 출력하도록 하게�
 
 signal()함수를 통해 기본동작도 수정이가능하다 SIGSTOP이랑 SIGKILL은 막을수없는 예외임
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.12.38.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.12.38.png" title="images" caption="" %}
 
 우리 과제에서 Signal함수를 통해 해당 signal의 기본 동작을 각 핸들러로 돌린것을 확인할 수 있음. 저거 주석처리하고한거랑 주석 다시 풀고 한거 밑에 비교
 우리과제에서 이렇게 하는 이유는 이미 기본동작 default action이 정의되어있는데 그걸 그대로 따라가면 쉘이종료가되어버린다. 그니까 그걸 막으려고 이렇게 재정의해준거!
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.14.14.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.14.14.png" title="images" caption="" %}
 
 `handler_t *signal(int signum, handler_t *handler)` : signum에 해당하는 시그널에 대해 핸들러를 handler(주소에 위치한 핸들러)로 변경해준다.
 handler 부분에 `SIG_IGN`이 들어가면 시그널 무시, `SIG_DFL`이 들어가면 기본 시그널로 다시 복귀시킨다..!? 테스트해봅시다.
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.23.55.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.23.55.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.23.39.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__2.23.39.png" title="images" caption="" %}
 
 각기 핸들러를 새로 정의해준거 뒤에다가 SIG_DFL로 다시설정해주니 보다시피 주석 제거한거랑 똑같이, 즉 핸들러 지정 안한거랑 똑같이 작동한다. 
 
 signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러로 제어가 이동하게한다 (catching, 처리한다) 핸들러가 return 을 만나면 제어권은 시그널이 발생하며 중단되었던 원래의 프로세스로 넘어가는것~~
-
+```C
     void int_handler(int sig){
     	printf("process %d received signal %d\n", getpid(), sig);
     	exit(0);
@@ -505,13 +508,13 @@ signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러�
             printf("child %d terminated abnormally\n", wpid);
         }
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__3.05.06.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__3.05.06.png" title="images" caption="" %}
 
 좀 애매하긴한데 아무튼 예상대로 결과가 나오기는 함
 
 ### **시그널 핸들러 이상동작????? 뭐가문제인지 잘 이해 안됨.**
-
+```C
     int ccount = 0;
     
     void child_handler(int sig){
@@ -536,11 +539,11 @@ signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러�
     		pause();
     	}
     }
-     
+```
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-04__12.34.39.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-04__12.34.39.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-04__12.46.39.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-04__12.46.39.png" title="images" caption="" %}
 
 위 WNOHANG사용, 아래 sleep만 사용
 자식들의 종료가 계속해서 발생하는데 handler는 한번에 하나의 시그널만 처리가 가능하고 대기 큐가 따로 없기때문에 시그널 처리에 헛발질이 발생한다. 
@@ -551,7 +554,7 @@ signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러�
 **(자식)—시그널—>(커널)               (부모)
 (자식)←-종료——(커널)—전달-→(부모)** 
 자식완전종료까지 기다리는게 wait. 그동안 종료되는 다른 자식들은 커널이 정상정으로 종료시키지만 부모가 다른 자식 종료를 기다리기때문에 부모에서 전달이 안된다. 즉 핸들러에서 처리가 안됨. waitpid와 WNOHANG을 써주면 커널이 자식을 종료시키는걸 따로 기다리지 않기때문에 즉각즉각 처리가되고 부모가 어디에 붙잡히지않으니까 정상적으로 다 처리됨.
-
+```C
     //내부 발생 이벤트 처리 프로그램
     
     int beeps = 0;
@@ -573,8 +576,8 @@ signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러�
     	alarm(1);
     	while(1);                          //while이 여기없으면 main이 죽어버리면서 끝남 
     }
-
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__5.03.33.png" title="" caption="" %}
+```
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-23__5.03.33.png" title="images" caption="" %}
 
 위에서 본 것처럼 핸들러가 처리하는 과정에서 또다시 인터럽트로 핸들러로 갈 수 있다. 여기서는 재귀식으로 처리했지만, 다른 핸들러로 가는것도 마찬가지로 가능함. 모든 핸들러가 종료되면 메인으로 돌아가서 실행됨.
 
@@ -595,7 +598,7 @@ signum에 해당하는 시그널 수신하면 handler에 해당하는 핸들러�
 pdf 24페이지 참조
 
 시그널 핸들러를 작성하는건 존나 까다롭다. 지맘대로 툭툭 튀어나오는거니까 힘들수밖에.. 언제 어디서 시그널이 수신될지 직관적이지 않고 시스템마다 처리방법이 다른데 메인과 함깨돌아가면서 전역변수들도 맘대로갖다씀 그래서 문제가됨.
-
+```C
     pid_t pid;
     int counter = 2;
     
@@ -621,11 +624,11 @@ pdf 24페이지 참조
     	printf("%d", counter);
     	exit(0);
     }
-
+```
 출력을 212로 예상했으나 213이나왔다. 근접했지만 한가지 놓친게 
 부모 자식이 분기하면서 counter는 모두 2로 가져간다. 따라서 자식이 handler를 통해 1로떨어진게 출력된 후 부모에서 1증가한다고해서 2 - 1 + 1이되는게아니라 2, 2-1, 2+1이 되는것!
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-27__1.48.12.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-27__1.48.12.png" title="images" caption="" %}
 
 race condition : concurrent한 프로그램에서 여러 프로세스가 동시에 하나의 자원에 접근하면 문제가 발생할 수 있다. 따라서 동시진입의 가능성을 제거해주어야 한다. 
 
@@ -641,22 +644,22 @@ race condition : concurrent한 프로그램에서 여러 프로세스가 동시�
 
 그냥뭔가 race condition이 발생할 수 있는 부분의 전후로 블락을해줘야하나?
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__12.40.44.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__12.40.44.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__12.40.57.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__12.40.57.png" title="images" caption="" %}
 
 포크하고 addjob되는거보다 자식이 먼저 실행될수도있는데, 자식이 만약 실행되어서 바로 중지되어버리면 addjob이 실행되기도 전에 , 즉 global 변수인 job list에 추가되기도전에 제거가 수행될 수 있다. concurrent한 컴퓨터에서 여러 프로세스들이 동시에 수행되다보니 이런 경주문제가 발생할 수 있는 것. 그래서 자식이 실행될때는 signal의 영향을 받지 못하게하는것!
 SIGCHLD핸들러에서도 delete전후로 마스크해준다.
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__2.16.34.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__2.16.34.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__2.16.22.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__2.16.22.png" title="images" caption="" %}
 
 main에서 child가 fork 되어나오면 pid는 0이고 수행이된다음에 SIGCHLD가 불리면, (이 이전까지는 블락되어있어서 문제가 안된다) handler에서 pid를 종료된 pid, 즉 0이 아닌값으로 바꿔놓게되고, 바꿔놓게 되는순간 부모프로세스에서 while문이 중단되면서 다음 행으로 넘어가게되는것. 이런식으로 명시적으로 시그널을 기다리게할 수 있다. 
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__8.24.11.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__8.24.11.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__8.31.45.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-29__8.31.45.png" title="images" caption="" %}
 
 suspend를 사용하는편이 pause를 쓰는것보다 낫고(race가 발생하지 않는다), sleep을 쓰는거보다 빠르다. 
 
@@ -707,11 +710,11 @@ malloc(13) → 헤더 4 + 페이로드 13 = 17, 인접 8배수는 24, 따라서 
 간접리스트로 메모리가 구성될 때 free 블럭을 찾는 방식은 크게 3가지가 있다.
 
 first fit, 최초할당 : 처음부터 일일히 검색해서 맨처음 크기가 맞는곳에 할당하는 방법 → 모든 블럭을 순회해야하므로 모든 블럭에 비례한 상수시간이 걸림. 이렇게하면 문제가 **시작부분에 작은 조각이 다수 발생할 수 있다는데, 이해가 안됨**
-
+```C
     p = start;
     while((p < end) && ((*p & 1)||(*p <= len)))    //p가 메모리 끝보단 작고, 할당이 되어있거나, 들어가기에 사이즈가 너무 작다면 할당 못한다. 
     	p = p + (*p & -2);                           //현재 위치의 사이즈만큼 더해주면 다음위치로 이동한다. 
-
+```
 현재 블럭의 주소가 가리키는곳은 블럭의 첫부분으로, 블럭의 사이즈와 할당 여부를 기록하고있다. 따라서 1과 and 해주면 할당여부를, -2혹은 -7과 and 해주면 사이즈를 얻어올 수 있음. 
 
 next fit , 다음할당 : 이전 검색이 종료된 위치부터 검색을 한다. 기본적인 방식은 first fit과 동일하다고 볼 수 있다. 
@@ -725,25 +728,25 @@ best fit : 최적할당 : 리스트 검색하며 가장 근접한 크기를 선�
 `#define PACK(size, alloc ((size)|(alloc)` size에 alloc여부를 쓰는듯 
 
 `#define getSize(x) ((x)->size & SIZEMASK)` size와 SIZEMASK의 and 연산을 통해 사이즈를 얻어온다.
-
+```C
     struct{
     	unsigned allocated : 1;
     	unsigned size : 31;
     }Header;
-
+```
 사실 이건 뭐하는건지 잘 모르겠다...
 
 할당을 free시키는 과정이 더 까다롭다. 할당했는지 나타내는 allocate 비트만(할당플래그) 0으로 표시해서는 문제가 해결되지 않는다. free 블럭 두개가 연속한경우 공간이 있지만, 두 블럭으로 나뉘어있기 때문에 탐색시 찾지 못하게 되는것. 
 
 free가 발생하면 앞 뒤의 free블럭이있다면 연결해주면 된다.
-
+```C
     void free_block(ptr p){
     	*p = *p & -2;
     	next = p + *p;        //p의 주소에 p의 사이즈를 더함, 다음 블럭
     	if((*next & 1) == 0)  //next의 할당이 0, 즉 free라면
     		*p = *p + *next;    //p와 next의 사이즈 정보를 합쳐서 p에 통합
     }
-
+```
 그치만 우리가 앞서 사용해왔던 방식의 간접 리스트는 헤더만 존제하기때문에 앞의 블럭은 확인할 수 없다. 앞의 블럭도 확인해주기 위해선 양방향 연결이 필요하다.
 
 양방향 연결 : 경계 태그 Boundary Tags
@@ -820,7 +823,7 @@ n사이즈의 리스트가 비어있지 않다면 리스트의 첫블록으로 �
 
 가용리스트 기준으로 찾으니까 알맞는걸 빨리찾을 수 있다. 그래서 매우 빠른 상수시간의 처리시간을 가지며 메모리이용률도 좋음
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-11-30__10.07.24.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-11-30__10.07.24.png" title="images" caption="" %}
 
 malloc은 payload의 시작점을 반환한다..?
 
@@ -876,9 +879,9 @@ shared : .so DLL이라고 보면 됨. 특수케이스. 필요할 때 적재되�
 
 executable : .out 코드와 데이터영역이 하나로 합쳐진거 relocatable들이 엮어진 것
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__2.07.33.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__2.07.33.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__6.14.37.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__6.14.37.png" title="images" caption="" %}
 
 심볼분류
 
@@ -897,15 +900,15 @@ static : 지역, 전역에서 모두 사용 가능. 선언된 범위에 따라 �
 지역심볼 : static 모두
 don't care : 지역변수
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__11.49.05.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__11.49.05.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__11.52.18.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__11.52.18.png" title="images" caption="" %}
 
 링커는 지역변수는 care하지 않는다. 
 
 단 지역변수더라도 static 변수라면 bss와 data에 저장되는 변수로 심볼을 부여받는 지역심볼이다. 이점에 유의해야함. 위에 **심볼분류 revisited**를 확인하자.
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__5.22.36.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__5.22.36.png" title="images" caption="" %}
 
 링커가 중복된경우 
 스트롱이 있다면 무조건무조건이야 strong한 심볼을 따라간다. 
@@ -935,9 +938,9 @@ libc.a는 기본 포함 라이브러리.  libc의 경우처럼 정적라이브�
 
 vector.h를 include하면 libvector.a를 링크한다. 
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__3.54.48.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__3.54.48.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__3.56.34.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__3.56.34.png" title="images" caption="" %}
 
 gcc -static -o prog2c main2.o -L -lvector ← 여기에 쓰이는 순서가 곧 확인 순서다. 아카이브가 뒤에 와야함 
 
@@ -951,13 +954,13 @@ gcc -static -o prog2c main2.o -L -lvector ← 여기에 쓰이는 순서가 곧 
 
 실행 중에도 링크될 수 있다 (런타임 링킹, dlopen())
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__4.10.34.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__4.10.34.png" title="images" caption="" %}
 
 링커가 **명시적으로 링크하는건 똑같은데 load후에 필요하면 가져다 쓰는** 방식이다. 그니까 실행파일에 다 포함되어있는게 아니라 실행파일은 없이 만들어놓고 **필요할 때 동적으로 so를 가져다 써라 이거지**  이게 load time에 동적링크하는거고 더 심화적으로 run time 에 링크할 수도 있다. 
 
 런타임에 동적으로 링크하는법은 아래와 같다. 
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__4.14.44.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-12__4.14.44.png" title="images" caption="" %}
 
 이번엔 에센셜한 libc만 가져다가 링크하고 libvector는 진짜 **쓸일이 생기면 dlopen으로 가져다가 쓴다. 말그대로 런타임에 동적으로 갖다쓰는거.** 
 
@@ -968,7 +971,7 @@ gcc -static -o prog2c main2.o -L -lvector ← 여기에 쓰이는 순서가 곧 
 - 내부 단편화 : 가용블럭의 크기가 할당할 데이터보다 큰 블럭에 그냥 데이터를 할당하게되면 실제 쓰는 공간보다 블럭이 큰데 거기에 다른 데이터를 할당할 수 없게됨. 이걸 내부단편화라함 
 **splitting을 통해 해결한다.**
 
-    {% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__4.28.16.png" title="" caption="" %}
+    {% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__4.28.16.png" title="images" caption="" %}
 
     오버헤드도 단편화에 포함되는 것 같음.
 
@@ -982,13 +985,13 @@ coalescing을 통해 해결한다.**
 
 ## waitpid하면..
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__12.13.48.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__12.13.48.png" title="images" caption="" %}
 
 선을 ...으로 표시해주자. 
 
 ## addjob after deletejob
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__1.05.23.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-07__1.05.23.png" title="images" caption="" %}
 
 child의 실행이 더 빨라서 delete가 먼저일어나고 add가 일어나면 add된 job은 누가삭제해줌? → 좀비가 되어버린다. 
 
@@ -1018,8 +1021,8 @@ interrupt검색해봐 거기 장황하게 나옴
 
 ## SIGPROCMASK의 인자들
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__5.00.43.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__5.00.43.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__6.15.18.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__6.15.18.png" title="images" caption="" %}
 
-{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__6.15.54.png" title="" caption="" %}
+{% include image_caption.html imageurl="/images/sysp_final/_2019-12-13__6.15.54.png" title="images" caption="" %}
